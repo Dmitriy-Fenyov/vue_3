@@ -8,7 +8,6 @@
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "@/components/PostList";
-
 export default {
     components: {
 PostForm, PostList
