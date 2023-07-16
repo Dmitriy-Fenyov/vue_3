@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <PostForm @create="createPost"/>
-        <PostList :posts="posts"/>
+        <PostList :posts="posts" @remove="removePost"/>
     </div>
 </template>
 
@@ -17,14 +17,17 @@ PostForm, PostList
         return {
             posts: [
                 {id: 1, title: 'Урок 1', body: 'Тема урока 1'},
-                {id: 1, title: 'Урок 2', body: 'Тема урока 2'},
-                {id: 1, title: 'Урок 3', body: 'Тема урока 3'},
+                {id: 2, title: 'Урок 2', body: 'Тема урока 2'},
+                {id: 3, title: 'Урок 3', body: 'Тема урока 3'},
             ],
         }
     },
     methods: {
         createPost(post) {
             this.posts.push(post);
+        },
+        removePost(post) {
+            this.posts = this.posts.filter(p => p.id !== post.id)
         }
 
     }
