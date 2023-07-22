@@ -16,6 +16,7 @@
         <div v-else>
             Идет загрузка...
         </div>
+        <div ref="observer" class="observer"></div>
     </div>
 </template>
 
@@ -44,6 +45,9 @@ export default {
             isPostsLoading: false,
             selectedSort: '',
             searchQuery: '',
+            page: 1,
+            limit: 10,
+            totalPages: 0,
             sortOptions: [
                 {value: 'title', name:'По названию'},
                 {value: 'body', name:'По содержанию'},
@@ -64,7 +68,13 @@ export default {
         async fetchPosts() {
             try {
                 this.isPostsLoading = true;
-                const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts',
+                    { params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+            });
+                this.totalPages = Math.ceil(response.headers['x-total-count']/ this.limit)
                 this.posts = response.data;
             } 
             catch (e) {
@@ -72,10 +82,38 @@ export default {
             } finally {
                 this.isPostsLoading = false;
             }
+        },
+        async loadMorePosts() {
+            try {
+                this.page +=1;
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts',
+                    { params: {
+                        _page: this.page,
+                        _limit: this.limit
+                    }
+            });
+                this.totalPages = Math.ceil(response.headers['x-total-count']/ this.limit)
+                this.posts = [...this.posts, ...response.data];
+            } 
+            catch (e) {
+                alert('ошибка')
+            } 
         }
     },
     mounted() {
         this.fetchPosts();
+        const options = {
+            rootMargin: '0px',
+            threshold: 1.0
+        }
+        const callback = (entries, observer) => {
+            console.log('qqq')
+            if (entries[0].isIntersecting && this.page < this.totalPages) {
+                this.loadMorePosts()
+            }
+        };
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
@@ -99,11 +137,13 @@ export default {
     padding: 20px;
 }
 
-
 .app__btns {
     display: flex;
     justify-content: space-between;
     margin: 15px 0;
 }
 
+.observer {
+    height: 20px;
+}
 </style>
