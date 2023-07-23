@@ -15,6 +15,6 @@ export default {
     padding: 10px 15px;
     background: none;
     color: teal;
-    border: 1px solid teal;
+    border: 1.5px solid teal;
 }
 </style>
