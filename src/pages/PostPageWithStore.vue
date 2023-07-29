@@ -26,7 +26,6 @@ import MyDialog from "@/components/UI/MyDialog";
 import MyButton from "@/components/UI/MyButton";
 import MySelect from "@/components/UI/MySelect";
 import MyInput from "@/components/UI/MyInput";
-import axios from "axios";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
     components: {

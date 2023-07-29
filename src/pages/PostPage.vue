@@ -4,10 +4,10 @@
         <MyInput v-model="searchQuery" placeholder="Поиск..."></MyInput>
         <div class="app__btns">
             <MyButton @click="showDialog">
-            Создать пост
-        </MyButton>
-        <MySelect v-model="selectedSort" :options="sortOptions">
-        </MySelect>
+                Создать пост
+            </MyButton>
+            <MySelect v-model="selectedSort" :options="sortOptions">
+            </MySelect>
         </div>
         <MyDialog v-model:show="dialogVisible" >
             <PostForm @create="createPost"/>
